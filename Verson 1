@@ -1,0 +1,108 @@
+#include <iostream>
+#include <string>
+#include <limits>
+using namespace std;
+
+int main() {
+    
+    // naming variables:
+ long double x;
+ long double y;
+ 
+ string z;
+ string v = "yes";
+ 
+ // main code:
+ while(v=="yes"){
+ cout<<"Enter first number: ";
+ cin>>x;
+ cin.ignore(numeric_limits<streamsize>::max(), '\n');
+ 
+ //invalid number check
+ while(cin.fail()){
+     cin.clear();
+     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+     cout<<"Thats not a number dummy! Enter one here: ";
+     cin>>x;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+ }
+ cout<<"Enter second number: ";
+ cin>>y;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  
+ while(cin.fail()){
+     cin.clear();
+     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+     cout<<"Invalid input. Enter second number here: ";
+     cin>>y;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+ }
+ 
+ cout<<"what would you like to do? (+,-,/,*)"<<endl;
+ cin>>z;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+ 
+ //symbol identification and result:
+ 
+ if(z=="+"){
+     cout<<x<<" + "<< y <<" = " <<x+y<<endl;
+ } else if(z=="-"){
+     cout<<x<<" - "<< y <<" = " <<x-y<<endl;
+ } else if(z=="/"){
+     if(y==0){
+         cout<<"cannot divide by 0!";
+     }else{
+     cout<<x<<" / "<< y <<" = " <<x/y<<endl;
+     }
+ } else if(z=="*"){
+     cout<<x<<" * "<< y <<" = " <<x*y<<endl;
+ } else {
+     while(z!="+" && z!="-" && z!="*" && z!="/"){
+         cout<<"invalid input! Enter again: ";
+         cin>>z;
+     }
+     if(z=="+"){
+     cout<<x<<" + "<< y <<" = " <<x+y<<endl;
+     
+ } else if(z=="-"){
+     cout<<x<<" - "<< y <<" = " <<x-y<<endl;
+     
+ } else if(z=="/"){
+     if(y==0){
+         cout<<"cannot divide by 0!";
+     }else{
+     cout<<x<<" / "<< y <<" = " <<x/y<<endl;
+     
+     }
+ } else if(z=="*"){
+     cout<<x<<" * "<< y <<" = " <<x*y<<endl;
+     
+     
+ }
+ }
+ //repeat:
+ cout<<"do you want to calculate again? (yes or no) ";
+ 
+ cin>>v;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+ 
+ if(v=="yes"){
+     continue;
+ } else if(v=="no"){
+     cout<<"Bye-Bye!";
+     return 0;
+ } else {
+     
+     while(v!="yes" && v!="no"){
+         cout<<"I do not understand! Enter valid input here: ";
+     cin>>v;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+     }
+     if(v=="no"){
+     cout<<"Bye-Bye!";
+     return 0;
+ }
+ }
+ }
+    return 0;
+}

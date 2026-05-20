@@ -252,11 +252,17 @@ username of the account:
 
 lord_equnox
 
+# Built With
 
-# Author
-
-Created using:
 - ESP32
 - Arduino IDE
 - C++
+- LiquidCrystal_I2C
+- Keypad Library
 - way too many semicolon investigations
+
+---
+
+# Author
+
+— by Sanu

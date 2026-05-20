@@ -211,7 +211,6 @@ Possible upgrades:
 - Scientific calculator functions
 - EEPROM memory storage
 - Calculation history
-- Battery-powered version
 - OLED display upgrade
 - WiFi-based calculator logging
 - Web interface using ESP32 WiFi

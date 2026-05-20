@@ -1,7 +1,5 @@
 # ESP32 Keypad Calculator
 
-### — by Sanu
-
 A fully functional calculator built using an ESP32, a 4x4 matrix keypad, and a 16x2 I²C LCD display.
 
 This project allows users to perform basic arithmetic operations directly from a physical keypad while displaying all input and results on the LCD screen.

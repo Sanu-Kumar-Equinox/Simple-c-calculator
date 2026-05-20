@@ -1,0 +1,142 @@
+//Libraries:
+#include <Keypad.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// variables:
+int x = 0;           
+long y = 0;          
+
+long number1 = 0;    
+long number2 = 0;   
+char op = ' ';   
+bool calculationDone = false;
+const byte ROWS = 4;
+const byte COLS = 4;
+
+//Matrix:
+char keys[ROWS][COLS] = {
+  {'/','=','0','$'}, 
+  {'*','9','8','7'},
+  {'-','6','5','4'},
+  {'+','3','2','1'},
+};
+
+//Pin definition:
+byte rowPins[ROWS]={23,25,26,27};
+byte colPins[COLS]={16,17,18,19};
+
+//Keypad startup:
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+// Math function to shift digits left and add the new one
+void datastore1(int inputDigit){
+  y = (y * 10) + inputDigit;
+}
+
+// Function to reset everything back to scratch
+void resetCalculator() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Enter number1:");
+  x = 0;
+  y = 0;
+  number1 = 0;
+  number2 = 0;
+  op = ' ';
+  calculationDone = false;
+}
+
+void setup() {
+
+  //LCD start:
+  lcd.init();
+  lcd.backlight();
+  resetCalculator();
+}
+
+void loop() {
+  char key = keypad.getKey();
+
+  if (key) {
+    // If pressed any key after an answer was given, wipe screen and starts fresh:
+    if (calculationDone && key != '$') {
+      resetCalculator();
+    }
+
+    // 1. CASE: User typed a digit inside the range 0-9:
+    if (key >= '0' && key <= '9') {
+      int actualNumber = key - '0'; 
+      datastore1(actualNumber);
+      
+      // Print to LCD
+      if (x < 16) {
+        lcd.setCursor(x, 1);
+        lcd.print(key);
+        x++;
+      }
+    }
+    
+    // 2. CASE: User typed an Operator (+, -, *, /)
+    else if (key == '+' || key == '-' || key == '*' || key == '/') {
+      // Only lock in number1 if actually typed something first
+      if (op == ' ') { 
+        number1 = y;      
+        op = key;         
+        y = 0;            
+        
+        // Update LCD UI to show what operator they selected
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(number1);
+        lcd.print(" ");
+        lcd.print(op);
+        x = 0;            
+      }
+    }
+    
+    // 3. CASE: typed equals (=)
+    else if (key == '=') {
+      number2 = y;        
+      long result = 0;
+      bool validCalculation = true;
+
+      // Perform calculation based on stored operator
+      if (op == '+') result = number1 + number2;
+      else if (op == '-') result = number1 - number2;
+      else if (op == '*') result = number1 * number2;
+      else if (op == '/') {
+        if (number2 != 0) {
+          result = number1 / number2;
+        } else {
+          validCalculation = false; 
+        }
+      } else {
+        validCalculation = false; 
+      }
+
+      // Display the final answer
+      lcd.clear();
+      if (validCalculation) {
+        lcd.setCursor(0, 0);
+        lcd.print("Answer:");
+        lcd.setCursor(0, 1);
+        lcd.print(result);
+        
+      } else {
+        lcd.setCursor(0, 0);
+        lcd.print("Error");
+      }
+      
+      calculationDone = true; 
+    }
+    
+    // 4. CASE: typed Clear 
+    else if (key == '$') {
+      resetCalculator();
+    }
+  }
+}
+
